@@ -1,4 +1,5 @@
 from logic import *
+import sys
 
 AKnight = Symbol("A is a Knight")
 AKnave = Symbol("A is a Knave")
@@ -110,22 +111,153 @@ knowledge3 = And(
 )
 
 
-def main():
-    symbols = [AKnight, AKnave, BKnight, BKnave, CKnight, CKnave]
-    puzzles = [
-        ("Puzzle 0", knowledge0),
-        ("Puzzle 1", knowledge1),
-        ("Puzzle 2", knowledge2),
-        ("Puzzle 3", knowledge3)
+def get_puzzle_description(puzzle_number):
+    descriptions = [
+        "Puzzle 0:\nA diz: 'Eu sou tanto um knight quanto um knave.'",
+        "Puzzle 1:\nA diz: 'Nós dois somos knaves.'\nB não diz nada.",
+        "Puzzle 2:\nA diz: 'Nós somos do mesmo tipo.'\nB diz: 'Nós somos de tipos diferentes.'",
+        "Puzzle 3:\nA diz ou 'Eu sou um knight.' ou 'Eu sou um knave.', mas você não sabe qual.\nB diz: 'A disse \'Eu sou um knave\'.'\nB diz: 'C é um knave.'\nC diz: 'A é um knight.'"
     ]
-    for puzzle, knowledge in puzzles:
-        print(puzzle)
-        if len(knowledge.conjuncts) == 0:
-            print("    Not yet implemented.")
+    return descriptions[puzzle_number]
+
+
+def check_user_solution(puzzle_number, user_answers):
+    knowledge_bases = [knowledge0, knowledge1, knowledge2, knowledge3]
+    knowledge = knowledge_bases[puzzle_number]
+    
+    # Criar um modelo com as respostas do usuário
+    model = {}
+    for symbol, value in user_answers.items():
+        model[symbol.name] = value
+    
+    # Verificar se o modelo satisfaz a base de conhecimento
+    try:
+        if knowledge.evaluate(model):
+            return True, "Sua solução está correta!"
         else:
-            for symbol in symbols:
-                if model_check(knowledge, symbol):
+            return False, "Sua solução está incorreta. Tente novamente."
+    except Exception as e:
+        return False, f"Erro ao verificar a solução: {e}"
+
+
+def get_correct_solution(puzzle_number):
+    symbols = [AKnight, AKnave, BKnight, BKnave, CKnight, CKnave]
+    knowledge_bases = [knowledge0, knowledge1, knowledge2, knowledge3]
+    knowledge = knowledge_bases[puzzle_number]
+    
+    solution = []
+    for symbol in symbols:
+        if model_check(knowledge, symbol):
+            solution.append(symbol)
+    
+    return solution
+
+
+def play_single_player():
+    while True:
+        print("\nEscolha um puzzle para jogar (0-3) ou 'q' para sair:")
+        choice = input("> ")
+        
+        if choice.lower() == 'q':
+            break
+        
+        try:
+            puzzle_number = int(choice)
+            if puzzle_number < 0 or puzzle_number > 3:
+                print("Por favor, escolha um número entre 0 e 3.")
+                continue
+        except ValueError:
+            print("Por favor, digite um número válido ou 'q' para sair.")
+            continue
+        
+        print("\n" + get_puzzle_description(puzzle_number))
+        print("\nLembre-se: Knights sempre dizem a verdade, Knaves sempre mentem.")
+        
+        # Determinar quais personagens estão no puzzle
+        characters = ['A']
+        if puzzle_number >= 1:
+            characters.append('B')
+        if puzzle_number >= 3:
+            characters.append('C')
+        
+        # Obter respostas do usuário
+        user_answers = {}
+        for char in characters:
+            while True:
+                print(f"\nVocê acha que {char} é um Knight ou um Knave? (K para Knight, N para Knave)")
+                answer = input("> ").upper()
+                
+                if answer == 'K':
+                    if char == 'A':
+                        user_answers[AKnight] = True
+                        user_answers[AKnave] = False
+                    elif char == 'B':
+                        user_answers[BKnight] = True
+                        user_answers[BKnave] = False
+                    elif char == 'C':
+                        user_answers[CKnight] = True
+                        user_answers[CKnave] = False
+                    break
+                elif answer == 'N':
+                    if char == 'A':
+                        user_answers[AKnight] = False
+                        user_answers[AKnave] = True
+                    elif char == 'B':
+                        user_answers[BKnight] = False
+                        user_answers[BKnave] = True
+                    elif char == 'C':
+                        user_answers[CKnight] = False
+                        user_answers[CKnave] = True
+                    break
+                else:
+                    print("Por favor, digite K para Knight ou N para Knave.")
+        
+        # Verificar a solução do usuário
+        is_correct, message = check_user_solution(puzzle_number, user_answers)
+        print(f"\n{message}")
+        
+        if not is_correct:
+            print("\nDeseja ver a solução correta? (s/n)")
+            show_solution = input("> ").lower()
+            
+            if show_solution == 's':
+                solution = get_correct_solution(puzzle_number)
+                print("\nSolução correta:")
+                for symbol in solution:
                     print(f"    {symbol}")
+
+
+def main():
+    print("Knights and Knaves - Jogo de Lógica")
+    print("====================================")
+    print("\nEscolha um modo de jogo:")
+    print("1. Modo Automático (mostrar soluções)")
+    print("2. Modo Single Player (jogar os puzzles)")
+    
+    choice = input("\nSua escolha (1 ou 2): ")
+    
+    if choice == "1":
+        # Modo automático original
+        symbols = [AKnight, AKnave, BKnight, BKnave, CKnight, CKnave]
+        puzzles = [
+            ("Puzzle 0", knowledge0),
+            ("Puzzle 1", knowledge1),
+            ("Puzzle 2", knowledge2),
+            ("Puzzle 3", knowledge3)
+        ]
+        for puzzle, knowledge in puzzles:
+            print(puzzle)
+            if len(knowledge.conjuncts) == 0:
+                print("    Not yet implemented.")
+            else:
+                for symbol in symbols:
+                    if model_check(knowledge, symbol):
+                        print(f"    {symbol}")
+    elif choice == "2":
+        # Modo single player
+        play_single_player()
+    else:
+        print("Escolha inválida. Por favor, execute o programa novamente.")
 
 
 if __name__ == "__main__":
