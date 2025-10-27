@@ -1,0 +1,60 @@
+# Knights and Knaves - Jogo de Lógica
+## Descrição
+Este é um jogo de lógica baseado no clássico puzzle "Knights and Knaves", onde existem dois tipos de personagens:
+
+- Knights (Cavaleiros) : sempre dizem a verdade
+- Knaves (Mentirosos) : sempre mentem
+## Estrutura do Projeto
+O projeto é composto por dois arquivos principais:
+
+### logic.py
+Implementa a base da lógica proposicional com as seguintes classes:
+
+- Sentence : classe base para todas as sentenças lógicas
+- Symbol : representa variáveis proposicionais
+- Not : representa negação lógica
+- And : representa conjunção lógica
+- Or : representa disjunção lógica
+- Implication : representa implicação lógica
+- Biconditional : representa bi-implicação lógica
+A função model_check verifica se uma base de conhecimento implica logicamente uma consulta.
+
+### puzzle.py
+Contém a implementação dos puzzles e a interface do jogo, incluindo:
+ Puzzles Implementados
+1. Puzzle 0 : Puzzle introdutório com apenas um personagem
+2. Puzzle 1 : Puzzle com dois personagens, onde apenas um fala
+3. Puzzle 2 : Puzzle com dois personagens que fazem afirmações contraditórias
+4. Puzzle 3 : Puzzle complexo com três personagens e múltiplas afirmações Modos de Jogo
+1. Modo Automático : Mostra automaticamente as soluções de todos os puzzles
+2. Modo Single Player : Permite que o jogador tente resolver os puzzles interativamente
+## Como Jogar
+1. Execute o jogo com o comando:
+```
+python puzzle.py
+```
+2. Escolha o modo de jogo:
+   
+   - Digite 1 para ver todas as soluções automaticamente
+   - Digite 2 para jogar no modo interativo
+3. No modo interativo:
+   
+   - Escolha um puzzle (0-3)
+   - Para cada personagem, decida se é um Knight (K) ou Knave (N)
+   - Receba feedback imediato sobre sua resposta
+   - Opção de ver a solução correta em caso de erro
+## Lógica do Jogo
+Cada puzzle é implementado usando lógica proposicional, onde:
+
+- Cada personagem é representado por dois símbolos (Knight e Knave)
+- As afirmações dos personagens são convertidas em implicações lógicas
+- O sistema verifica automaticamente a consistência das respostas
+## Funcionalidades
+- Interface em português
+- Verificação automática de respostas
+- Feedback imediato
+- Opção de visualizar soluções
+- Dois modos de jogo distintos
+## Requisitos
+- Python 3.x
+- Não requer bibliotecas externas
