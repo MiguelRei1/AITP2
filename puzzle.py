@@ -184,6 +184,7 @@ def play_single_player():
         user_answers = {}
         for char in characters:
             while True:
+                print()
                 print(f"Você acha que {char} é um Knight ou um Knave? (K para Knight, N para Knave)")
                 answer = input("> ").upper()
                 
