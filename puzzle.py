@@ -113,10 +113,10 @@ knowledge3 = And(
 
 def get_puzzle_description(puzzle_number):
     descriptions = [
-        "Puzzle 0:\nA diz: 'Eu sou tanto um knight quanto um knave.'",
-        "Puzzle 1:\nA diz: 'Nós dois somos knaves.'\nB não diz nada.",
-        "Puzzle 2:\nA diz: 'Nós somos do mesmo tipo.'\nB diz: 'Nós somos de tipos diferentes.'",
-        "Puzzle 3:\nA diz ou 'Eu sou um knight.' ou 'Eu sou um knave.', mas você não sabe qual.\nB diz: 'A disse \'Eu sou um knave\'.'\nB diz: 'C é um knave.'\nC diz: 'A é um knight.'"
+        "Puzzle 0: diz: 'Eu sou tanto um knight quanto um knave.'",
+        "Puzzle 1:A diz: 'Nós dois somos knaves.'B não diz nada.",
+        "Puzzle 2:A diz: 'Nós somos do mesmo tipo.'B diz: 'Nós somos de tipos diferentes.'",
+        "Puzzle 3:A diz ou 'Eu sou um knight.' ou 'Eu sou um knave.', mas você não sabe qual.B diz: 'A disse \'Eu sou um knave\'.'B diz: 'C é um knave.'C diz: 'A é um knight.'"
     ]
     return descriptions[puzzle_number]
 
@@ -155,7 +155,7 @@ def get_correct_solution(puzzle_number):
 
 def play_single_player():
     while True:
-        print("\nEscolha um puzzle para jogar (0-3) ou 'q' para sair:")
+        print("Escolha um puzzle para jogar (0-3) ou 'q' para sair:")
         choice = input("> ")
         
         if choice.lower() == 'q':
@@ -170,8 +170,8 @@ def play_single_player():
             print("Por favor, digite um número válido ou 'q' para sair.")
             continue
         
-        print("\n" + get_puzzle_description(puzzle_number))
-        print("\nLembre-se: Knights sempre dizem a verdade, Knaves sempre mentem.")
+        print("" + get_puzzle_description(puzzle_number))
+        print("Lembre-se: Knights sempre dizem a verdade, Knaves sempre mentem.")
         
         # Determinar quais personagens estão no puzzle
         characters = ['A']
@@ -214,15 +214,15 @@ def play_single_player():
         
         # Verificar a solução do usuário
         is_correct, message = check_user_solution(puzzle_number, user_answers)
-        print(f"\n{message}")
+        print(f"{message}")
         
         if not is_correct:
-            print("\nDeseja ver a solução correta? (s/n)")
+            print("Deseja ver a solução correta? (s/n)")
             show_solution = input("> ").lower()
             
             if show_solution == 's':
                 solution = get_correct_solution(puzzle_number)
-                print("\nSolução correta:")
+                print("Solução correta:")
                 for symbol in solution:
                     print(f"    {symbol}")
 
@@ -230,11 +230,11 @@ def play_single_player():
 def main():
     print("Knights and Knaves - Jogo de Lógica")
     print("====================================")
-    print("\nEscolha um modo de jogo:")
+    print("Escolha um modo de jogo:")
     print("1. Modo Automático (mostrar soluções)")
     print("2. Modo Single Player (jogar os puzzles)")
     
-    choice = input("\nSua escolha (1 ou 2): ")
+    choice = input("Sua escolha (1 ou 2): ")
     
     if choice == "1":
         # Modo automático original
